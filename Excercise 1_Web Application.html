@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Restaurant Order</title>
+	<!--<script type="text/javascript">
+	function add_details()
+	{
+       var str1=document.getElementById("order_id1").value;
+       alert("Value entered is"+str1)
+       var str2=document.getElementById("order_name1").value;
+       var str3=document.getElementById("order_price1").value;
+       var str4 =document.getElementById("order_id2").value;
+       var str5 =document.getElementById("order_name2").value;
+       var str6 =document.getElementById("order_price2").value;
+
+     }
+
+
+    function get_details()
+
+    {
+
+       var str7 = document.getElementById("id1").value;
+       alert("Value entered is"+str7);
+
+
+
+
+    }	
+
+</script> -->
+
+ <script src="https://cdn.jsdelivr.net/npm/web3@1.2.8/dist/web3.js"></script>
+    <script>  
+  
+  var account;
+  window.addEventListener('load', async () => {
+
+  
+    if (typeof window.ethereum !== 'undefined') { 
+      console.log("MetaMask is Available :) !"); 
+      }
+      
+    // Modern DApp browsers
+    if (window.ethereum) {
+      window.web3 = new Web3(ethereum);
+      
+      // To prevent the page reloading when the MetaMask network changes
+      ethereum.autoRefreshOnNetworkChange = false;
+      
+      // To Capture the account details from MetaMask
+      const accounts = await ethereum.enable();
+      account = accounts[0];
+        
+      }
+    // Legacy DApp browsers
+    else if (window.web3) {
+      //window.web3 = new Web3(web3.currentProvider);
+      window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+      }
+    // Non-DApp browsers
+    else {
+      console.log('Non-Ethereum browser detected. Please install MetaMask');
+      }
+      
+      });
+    </script>     
+
+</head>
+<body>
+<h1>Order details</h1>
+<form>
+<table style="width: 30%">
+<tr>
+<td>Order ID 1:</td>
+<td><input id="order_id1" type="text" name="order_id1" placeholder="Enter Order ID" pattern="[A-Z0-9]{4}" required=""></td>	
+</tr>
+<tr>
+<td>Dish Name 1:</td>
+<td><input id="order_name1" type="text" placeholder="Enter the Dish 1 Name" name="order_name1" required=""></td>
+</tr>
+<tr>
+<td>Dish 1 Price:</td>
+<td><input id="order_price1" type="text" name="order_price1" placeholder="Enter the Dish 1 price" pattern="[0-9]+" required=""></td>
+</tr>
+<tr>
+<td>Order ID 2:</td>
+<td><input id="order_id2" type="text" name="order_id2" placeholder="Enter Order ID " pattern="[A-Z0-9]{4}" required=""></td>	
+</tr>
+<tr>
+<td>Dish Name 2:</td>
+<td><input id="order_name2" type="text" name="order_name2" placeholder="Enter Dish Name 2" required=""></td>
+</tr>
+<tr>
+<td>Dish 2 Price:</td>
+<td><input type="text" name="order_price2" placeholder="Enter Dish 2 Price" pattern="[0-9]+" required=""></td>
+</tr>
+<tr>
+<td><input type="button" name="btn1" id="btn1" onclick="add_details()" value="Submit">
+</td>
+</tr>
+
+</table>	
+<br>
+
+<h3> Show Details </h3>
+<form>
+<table style="30%">
+<tr>
+<td>Enter Order ID :</td>
+<td> <input type="text" id="id1" name="id1"></td>
+</tr>
+<tr>
+<td><input type="button" onclick="get_details()" value="Get  Details">
+</td>
+</tr>
+<tr>
+<td>Dish ID 1:</td>
+<td><b><div id="get_Id1"></div></b></td>
+</tr>
+<tr>
+<td>Dish Name 1:</td>
+<td><b><div id="get_Name1"></div></b></td>
+</tr>
+
+<tr>
+<td>Dish Price1:</td>
+<td><b><div id="get_Price1"></div></b></td>
+</tr>
+
+<tr>
+<td>Dish ID 2:</td>
+<td><b><div id="get_Id2"></div></b></td>
+</tr>
+
+<tr>
+<td>Dish Name 2:</td>
+<td><b><div id="get_Name2"></div></b></td>
+</tr>
+
+<tr>
+<td><b><div id="get_Price2"></div></b></td>
+</tr>
+</table>
+</form>
+
+<h3>Total </h3>
+
+<form>
+
+<table style=" width:30%">
+
+<tr>
+<td>Order Name:</td>
+<td><b><div id="get_orderName1"></div></b></td>
+</tr>	
+
+<tr>
+<td>Order Price 1:</td>
+<td><b><div id="get_Price1"></div></b></td>
+</tr>	
+
+<tr>
+<td>Order Name 2:</td>
+<td><b><div id="get_orderName2"></div></b></td>
+</tr>
+
+<tr>
+<td>Order Price 2:</td>
+<td><b><div id="get_Price2"></div></b></td>
+</tr>	
+
+
+<tr>
+<td>Total:</td>
+<td><b><div id="get_Total"></div></b></td>
+</tr>	
+
+
+</table>
+
+
+
+</body>
+</html>
