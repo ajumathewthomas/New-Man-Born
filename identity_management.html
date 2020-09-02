@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Identity Management</title>
+	<!--<script type="text/javascript">
+	function add_details()
+	{
+       var str1=document.getElementById("order_id1").value;
+       alert("Value entered is"+str1)
+       var str2=document.getElementById("order_name1").value;
+       var str3=document.getElementById("order_price1").value;
+       var str4 =document.getElementById("order_id2").value;
+       var str5 =document.getElementById("order_name2").value;
+       var str6 =document.getElementById("order_price2").value;
+
+     }
+
+
+    function get_details()
+
+    {
+
+       var str7 = document.getElementById("id1").value;
+       alert("Value entered is"+str7);
+
+
+
+
+    }	
+
+</script> -->
+
+ <script src="https://cdn.jsdelivr.net/npm/web3@1.2.8/dist/web3.js"></script>
+    <script>  
+  
+  var account;
+  window.addEventListener('load', async () => {
+
+  
+    if (typeof window.ethereum !== 'undefined') { 
+      console.log("MetaMask is Available :) !"); 
+      }
+      
+    // Modern DApp browsers
+    if (window.ethereum) {
+      window.web3 = new Web3(ethereum);
+      
+      // To prevent the page reloading when the MetaMask network changes
+      ethereum.autoRefreshOnNetworkChange = false;
+      
+      // To Capture the account details from MetaMask
+      const accounts = await ethereum.enable();
+      account = accounts[0];
+        
+      }
+    // Legacy DApp browsers
+    else if (window.web3) {
+      //window.web3 = new Web3(web3.currentProvider);
+      window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+      }
+    // Non-DApp browsers
+    else {
+      console.log('Non-Ethereum browser detected. Please install MetaMask');
+      }
+      
+      });
+
+  // Smart Contract ABI - Application Binary Interfaces
+  var abi = [
+{
+"inputs": [
+{
+"internalType": "string",
+"name": "u_id",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "u_name",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "u_bloodgroup",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "u_gender",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "u_state",
+"type": "string"
+}
+],
+"name": "getDetails",
+"outputs": [],
+"stateMutability": "nonpayable",
+"type": "function"
+},
+{
+"inputs": [],
+"name": "showDetails",
+"outputs": [
+{
+"internalType": "string",
+"name": "",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "",
+"type": "string"
+},
+{
+"internalType": "string",
+"name": "",
+"type": "string"
+}
+],
+"stateMutability": "view",
+"type": "function"
+}
+]
+
+// Smart Contract Address
+var contractaddress ='0x5C8eEf29470E19cc529dD50fF4186C8780d28bFF'
+function add_details()
+{
+
+   console.log("Invoking Smart Contracts");
+
+  //Instantiate and connect to contract address via ABI
+
+   var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '500000'});
+
+   var str1=document.getElementById("u_id").value;
+   var str2=document.getElementById("u_name").value;
+   var str3=document.getElementById("u_blood_group").value;
+   var str4 =document.getElementById("u_gender").value;
+   var str5 =document.getElementById("u_state").value;
+
+
+
+  // call the function getDetails
+
+   var result = myContract.methods.getDetails(str1,str2,str3,str4,str5).send(function(err,result){
+ 
+   if(err){console.log(err);}
+   if(result){ document.getElementById("result").innerHTML = result; }
+
+   });
+
+ 
+}
+
+function get_details(){
+
+var myContract = new web3.eth.Contract(abi,contractaddress, {from: account, gasPrice: '5000000', gas: '500000'});
+var result = myContract.methods.showDetails().call(function(err,result){
+
+   if(err){console.log(err);}
+   if(result){ 
+               
+               document.getElementById("get_Id").innerHTML = result[0];
+               document.getElementById("get_Name").innerHTML = result[1];
+               document.getElementById("get_bloodgroup").innerHTML = result[2];
+               document.getElementById("get_gender").innerHTML = result[3];
+               document.getElementById("get_state").innerHTML = result[4];
+               
+
+
+    }
+
+   });
+ 
+
+}
+
+</script>     
+
+</head>
+<body>  
+<h1>Enter your details</h1>
+<form>
+<table style="width: 30%">
+<tr>
+<td>User ID:</td>
+<td><input id="u_id" type="text" name="u_id" placeholder="Enter User ID" pattern="[A-Z0-9]{4}" required=""></td>	
+</tr>
+<tr>
+<td>Name:</td>
+<td><input id="u_name" type="text" placeholder="Enter your name" name="u_name" required=""></td>
+</tr>
+<tr>
+<td>Blood Group:</td>
+<td><input id="u_blood_group" type="text" name="u_blood_group" placeholder="Enter the blood group"  required=""></td>
+</tr>
+<tr>
+<td>Gender:</td>
+<td><input id="u_gender" type="text" name="u_gender" placeholder="Enter your Gender "  required=""></td>	
+</tr>
+<tr>
+<td>State:</td>
+<td><input id="u_state" type="text" name="u_state" placeholder="Enter your state" required=""></td>
+</tr>
+<tr>
+<td><input type="button" name="btn1" id="btn1" onclick="add_details()" value="Submit"></td>
+</tr>
+<tr>
+<td><b><div id="result"></div></b></td>
+</tr>
+</table>	
+<br>
+
+<h3> Show Details </h3>
+<form>
+<table style="30%">
+<tr>
+<td><input type="button" onclick="get_details()" value="Get  Details">
+</td>
+
+</tr>
+<tr>
+<td>User ID :</td>
+<td><b><div id="get_Id"></div></b></td>
+</tr>
+<tr>
+<td>Name:</td>
+<td><b><div id="get_Name"></div></b></td>
+</tr>
+
+<tr>
+<td>Blood group:</td>
+<td><b><div id="get_bloodgroup"></div></b></td>
+</tr>
+
+<tr>
+<td>Gender:</td>
+<td><b><div id="get_gender"></div></b></td>
+</tr>
+<tr>
+<td>State:</td>
+<td><b><div id="get_state"></div></b></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
